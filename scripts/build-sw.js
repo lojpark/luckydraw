@@ -56,8 +56,7 @@ self.addEventListener('activate', (event) => {
 
 writeFileSync('dist/service-worker.js', killSwitch);
 
-// src/index.ts가 번들 파일명의 content hash를 버전으로 읽는다. 파일명 규칙이나
-// script 태그 구조가 바뀌면 조용히 'dev'로 떨어지므로 산출물로 확인한다.
+// 배포 HTML이 해시가 붙은 JavaScript 번들을 참조하는지 확인한다.
 const html = readFileSync('dist/index.html', 'utf-8');
 const bundleSrc = html.match(/<script type=module src=([^\s>]+)/)?.[1] ?? '';
-assert(/\.[0-9a-f]{6,}\.js/.test(bundleSrc), `버전 추출 실패: module script src가 "${bundleSrc}"`);
+assert(/\.[0-9a-f]{6,}\.js/.test(bundleSrc), `JavaScript 번들 확인 실패: module script src가 "${bundleSrc}"`);

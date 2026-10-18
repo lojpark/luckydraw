@@ -83,9 +83,6 @@ export function isPlayableStage(v: unknown): v is StageDef {
   if (!isObj(v) || typeof v.title !== 'string' || !isNum(v.goalY) || !isNum(v.zoomY)) return false;
   if (!Array.isArray(v.entities) || v.entities.length === 0 || v.entities.length > MAX_ENTITIES) return false;
   if (!v.entities.every(isEntity)) return false;
-  if (v.adBoards !== undefined) {
-    if (!Array.isArray(v.adBoards) || !v.adBoards.every((b) => isObj(b) && isNum(b.x) && isNum(b.y))) return false;
-  }
   if (v.progress !== undefined) {
     if (!isObj(v.progress)) return false;
     const oneWays = v.progress.oneWays;
@@ -214,7 +211,7 @@ export function setSelectedMapId(id: string) {
 
 /**
  * 받은 맵으로 게임을 시작했다고 알린다. 맵 공유마당의 인기순(최근 7일 플레이) 에 쓰인다.
- * 광고 노출 집계처럼 결과를 기다리지 않는다. 본문과 헤더가 없는 POST 라 CORS 프리플라이트도 생기지 않는다
+ * 본문과 헤더가 없는 POST 라 CORS 프리플라이트도 생기지 않는다.
  */
 export function reportCommunityMapPlay(apiBase: string, mapId: string) {
   if (!mapId.startsWith('community:')) return;
